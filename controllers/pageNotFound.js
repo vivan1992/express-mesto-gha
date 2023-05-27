@@ -1,4 +1,5 @@
+const ERROR_CODE_NOTFOUND = 404;
 
 module.exports.pageNotFound = (req, res) => {
-  res.send({message: 'Страница не найдена'});
+  res.status(ERROR_CODE_NOTFOUND).send({message: 'Страница не найдена'});
 };
