@@ -39,6 +39,10 @@ module.exports.deleteCard = (req, res) => {
         return res.status(ERROR_CODE_NOTFOUND).send({ message: 'Карточка с указанным _id не найдена.'})
       }
 
+      if (err.name === 'CastError') {
+        return res.status(ERROR_CODE_VALIDATION).send({ message: "Переданы некорректные данные"})
+      }
+
       res.status(500).send({
         message: 'Произошла ошибка',
         err: err.message,
@@ -61,7 +65,7 @@ module.exports.likeCard = (req, res) => Card.findByIdAndUpdate(
       return res.status(ERROR_CODE_NOTFOUND).send({ message: 'Передан несуществующий _id карточки'})
     }
 
-    if (err.name === 'ValidationError') {
+    if (err.name === 'CastError') {
       return res.status(ERROR_CODE_VALIDATION).send({ message: "Переданы некорректные данные для постановки лайка"})
     }
 
@@ -86,7 +90,7 @@ module.exports.dislikeCard = (req, res) => Card.findByIdAndUpdate(
       return res.status(ERROR_CODE_NOTFOUND).send({ message: 'Передан несуществующий _id карточки'})
     }
 
-    if (err.name === 'ValidationError') {
+    if (err.name === 'CastError') {
       return res.status(ERROR_CODE_VALIDATION).send({ message: "Переданы некорректные данные для снятия лайка"})
     }
 

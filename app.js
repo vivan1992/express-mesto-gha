@@ -8,7 +8,7 @@ const app = express();
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '646bc16b77dffb924b9cdc04' // вставьте сюда _id созданного в предыдущем пункте пользователя
+    _id: '646bc16b77dffb924b9cdc04'
   };
 
   next();
@@ -20,11 +20,11 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true
 });
 
+
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
+app.use('/', require('./routes/404'));
 
 app.listen(PORT, () => {
   console.log('Ссылка на сервер');
 });
-
-//id  646bc16b77dffb924b9cdc04

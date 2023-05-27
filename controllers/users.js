@@ -28,7 +28,6 @@ module.exports.getUserId = (req, res) => {
         return res.status(ERROR_CODE_VALIDATION).send({ message: "Переданы некорректные данные"})
       }
 
-      console.log(err.name);
       res.status(500).send({
         message: 'Произошла ошибка',
         err: err.message,
