@@ -23,6 +23,12 @@ module.exports.getUserId = (req, res) => {
       if (err.message === 'NotFound') {
         return res.status(ERROR_CODE_NOTFOUND).send({ message: 'Пользователь по указанному _id не найден.'})
       }
+
+      if (err.name === 'CastError') {
+        return res.status(ERROR_CODE_VALIDATION).send({ message: "Переданы некорректные данные"})
+      }
+
+      console.log(err.name);
       res.status(500).send({
         message: 'Произошла ошибка',
         err: err.message,
@@ -51,7 +57,7 @@ module.exports.createUser = (req, res) => {
 module.exports.updateUser = (req, res) => {
   const {name, about} = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { name, about }, {new: true})
+  User.findByIdAndUpdate(req.user._id, { name, about }, {new: true, runValidators: true})
     .orFail(() => {
       throw new Error("NotFound");
     })
@@ -76,7 +82,7 @@ module.exports.updateUser = (req, res) => {
 module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { avatar }, {new: true})
+  User.findByIdAndUpdate(req.user._id, { avatar }, {new: true, runValidators: true})
     .orFail(() => {
       throw new Error("NotFound");
     })

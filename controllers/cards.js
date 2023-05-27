@@ -50,7 +50,7 @@ module.exports.deleteCard = (req, res) => {
 module.exports.likeCard = (req, res) => Card.findByIdAndUpdate(
   req.params.cardId,
   { $addToSet: { likes: req.user._id } },
-  { new: true }
+  { new: true, runValidators: true }
 )
   .orFail(() => {
     throw new Error("NotFound");
@@ -75,7 +75,7 @@ module.exports.likeCard = (req, res) => Card.findByIdAndUpdate(
 module.exports.dislikeCard = (req, res) => Card.findByIdAndUpdate(
   req.params.cardId,
   { $pull: { likes: req.user._id } },
-  { new: true }
+  { new: true, runValidators: true }
 )
   .orFail(() => {
     throw new Error("NotFound");
