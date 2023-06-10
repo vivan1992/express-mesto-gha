@@ -9,7 +9,7 @@ const { errors } = require('celebrate');
 const { login } = require('./controllers/users');
 const { createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
-const { vlaidatorCreateUser, vlaidatorToken } = require('./middlewares/validate');
+const { vlaidatorCreateUser } = require('./middlewares/validate');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -23,7 +23,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
 });
 
-app.post('/signin', vlaidatorToken, login);
+app.post('/signin', vlaidatorCreateUser, login);
 app.post('/signup', vlaidatorCreateUser, createUser);
 
 app.use(auth);
