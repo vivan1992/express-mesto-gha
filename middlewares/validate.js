@@ -39,8 +39,8 @@ const vlaidatorUserId = celebrate({
 
 const vlaidatorCard = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    link: Joi.string().custom(urlValidator, 'urlValidator'),
+    name: Joi.string().min(2).max(30).required(),
+    link: Joi.string().custom(urlValidator, 'urlValidator').required(),
   }),
   cookies: Joi.object().keys({
     jwt: Joi.string().required(),
