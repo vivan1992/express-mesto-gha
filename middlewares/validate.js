@@ -7,7 +7,7 @@ const vlaidatorCreateUser = celebrate({
     password: Joi.string().required().min(8),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().custom(urlValidator, 'urlValidator').required(),
+    avatar: Joi.string().custom(urlValidator, 'urlValidator'),
   }),
 });
 
@@ -15,7 +15,7 @@ const vlaidatorUserBody = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().custom(urlValidator, 'urlValidator').required(),
+    avatar: Joi.string().custom(urlValidator, 'urlValidator'),
   }),
   cookies: Joi.object().keys({
     jwt: Joi.string().required(),
@@ -40,7 +40,7 @@ const vlaidatorUserId = celebrate({
 const vlaidatorCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
-    link: Joi.string().custom(urlValidator, 'urlValidator').required(),
+    link: Joi.string().custom(urlValidator, 'urlValidator'),
   }),
   cookies: Joi.object().keys({
     jwt: Joi.string().required(),
