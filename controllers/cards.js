@@ -13,11 +13,10 @@ module.exports.createCard = (req, res, next) => {
     .then((card) => res.status(201).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError('Переданы некорректные данные при создании карточки.');
+        next(new ValidationError('Переданы некорректные данные при создании карточки.'));
       }
-      throw err;
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports.getCard = (req, res, next) => {
@@ -35,16 +34,15 @@ module.exports.deleteCard = (req, res, next) => {
       if (JSON.stringify(card.owner) !== JSON.stringify(req.user._id)) {
         throw new NoRulesError('Нет прав на удаление данной карточки');
       }
-      Card.findByIdAndRemove(req.params.cardId)
+      return Card.deleteOne({ _id: req.params.cardId })
         .then((c) => res.send({ c }));
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        throw new ValidationError('Переданы некорректные данные');
+        next(new ValidationError('Переданы некорректные данные'));
       }
-      throw err;
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
@@ -58,11 +56,10 @@ module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
   .then((card) => res.send(card))
   .catch((err) => {
     if (err instanceof mongoose.Error.CastError) {
-      throw new ValidationError('Переданы некорректные данные');
+      next(new ValidationError('Переданы некорректные данные'));
     }
-    throw err;
-  })
-  .catch(next);
+    next(err);
+  });
 
 module.exports.dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
   req.params.cardId,
@@ -75,8 +72,7 @@ module.exports.dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
   .then((card) => res.send(card))
   .catch((err) => {
     if (err instanceof mongoose.Error.CastError) {
-      throw new ValidationError('Переданы некорректные данные');
+      next(new ValidationError('Переданы некорректные данные'));
     }
-    throw err;
-  })
-  .catch(next);
+    next(err);
+  });

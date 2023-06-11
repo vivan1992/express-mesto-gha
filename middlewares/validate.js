@@ -11,29 +11,22 @@ const vlaidatorCreateUser = celebrate({
   }),
 });
 
-const vlaidatorUserBody = celebrate({
+const vlaidatorUserMe = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().custom(urlValidator, 'urlValidator'),
-  }),
-  cookies: Joi.object().keys({
-    jwt: Joi.string().required(),
   }),
 });
 
-const vlaidatorToken = celebrate({
-  cookies: Joi.object().keys({
-    jwt: Joi.string().required(),
+const vlaidatorUserAvatar = celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().custom(urlValidator, 'urlValidator'),
   }),
 });
 
 const vlaidatorUserId = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().alphanum().length(24),
-  }),
-  cookies: Joi.object().keys({
-    jwt: Joi.string().required(),
+    userId: Joi.string().hex().length(24).required(),
   }),
 });
 
@@ -42,25 +35,19 @@ const vlaidatorCard = celebrate({
     name: Joi.string().min(2).max(30).required(),
     link: Joi.string().custom(urlValidator, 'urlValidator').required(),
   }),
-  cookies: Joi.object().keys({
-    jwt: Joi.string().required(),
-  }),
 });
 
 const vlaidatorCardId = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().alphanum().length(24),
-  }),
-  cookies: Joi.object().keys({
-    jwt: Joi.string().required(),
+    cardId: Joi.string().hex().length(24).required(),
   }),
 });
 
 module.exports = {
   vlaidatorCreateUser,
-  vlaidatorUserBody,
-  vlaidatorToken,
+  vlaidatorUserMe,
   vlaidatorUserId,
   vlaidatorCard,
   vlaidatorCardId,
+  vlaidatorUserAvatar,
 };

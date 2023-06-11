@@ -1,12 +1,12 @@
 const router = require('express').Router();
 
-const { vlaidatorCard, vlaidatorToken, vlaidatorCardId } = require('../middlewares/validate');
+const { vlaidatorCard, vlaidatorCardId } = require('../middlewares/validate');
 
 const {
   createCard, getCard, deleteCard, likeCard, dislikeCard,
 } = require('../controllers/cards');
 
-router.get('/', vlaidatorToken, getCard);
+router.get('/', getCard);
 
 router.post('/', vlaidatorCard, createCard);
 

@@ -51,11 +51,10 @@ module.exports.getUserId = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        throw new ValidationError('Переданы некорректные данные');
+        next(new ValidationError('Переданы некорректные данные'));
       }
-      throw err;
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -85,14 +84,13 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        throw new ConflictError('Пользователь с таким email уже зарегистрирован');
+        next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
       }
       if (err instanceof mongoose.Error.ValidationError) {
-        throw new ValidationError('Переданы некорректные данные при создании пользователя');
+        next(new ValidationError('Переданы некорректные данные при создании пользователя'));
       }
-      throw err;
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -105,12 +103,10 @@ module.exports.updateUser = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        throw new ValidationError('Переданы некорректные данные при обновлении профиля');
+        next(new ValidationError('Переданы некорректные данные при обновлении профиля'));
       }
-
-      throw err;
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -123,11 +119,10 @@ module.exports.updateAvatar = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        throw new ValidationError('Переданы некорректные данные при обновлении аватара');
+        next(new ValidationError('Переданы некорректные данные при обновлении аватара'));
       }
-      throw err;
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports.getUserMe = (req, res, next) => {
@@ -139,10 +134,9 @@ module.exports.getUserMe = (req, res, next) => {
     })
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
-        throw new ValidationError('Переданы некорректные данные');
+      if (err instanceof mongoose.Error.CastError) {
+        next(new ValidationError('Переданы некорректные данные'));
       }
-      throw err;
-    })
-    .catch(next);
+      next(err);
+    });
 };
