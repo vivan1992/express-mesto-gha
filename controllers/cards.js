@@ -36,7 +36,7 @@ module.exports.deleteCard = (req, res, next) => {
         throw new NoRulesError('Нет прав на удаление данной карточки');
       }
       return Card.deleteOne({ _id: req.params.cardId })
-        .then(() => res.send({ message: 'Карточка удалена' }));
+        .then(() => res.send(card));
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
