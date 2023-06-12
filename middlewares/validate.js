@@ -13,14 +13,14 @@ const vlaidatorCreateUser = celebrate({
 
 const vlaidatorUserMe = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
+    name: Joi.string().min(2).max(30).required(),
+    about: Joi.string().min(2).max(30).required(),
   }),
 });
 
 const vlaidatorUserAvatar = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().custom(urlValidator, 'urlValidator'),
+    avatar: Joi.string().custom(urlValidator, 'urlValidator').required(),
   }),
 });
 
