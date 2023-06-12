@@ -49,7 +49,13 @@ module.exports.getUserId = (req, res, next) => {
       throw new NotFoundError('Пользователь по указанному _id не найден');
     })
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err instanceof mongoose.Error.CastError) {
+        next(new ValidationError('Переданы некорректные данные'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.createUser = (req, res, next) => {
