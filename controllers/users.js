@@ -8,6 +8,8 @@ const ConflictError = require('../errors/ConflictError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const ValidationError = require('../errors/ValidationError');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
@@ -23,7 +25,11 @@ module.exports.login = (req, res, next) => {
             return Promise.reject(new UnauthorizedError('Неправильные почта или пароль'));
           }
 
-          const token = jwt.sign({ _id: user._id }, '0a8cbb838e06f6c22e2e5a6d71f471665c435f8dd311a9cd75c461c6b2ea2940', { expiresIn: '7d' });
+          const token = jwt.sign(
+            { _id: user._id },
+            NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+            { expiresIn: '7d' },
+          );
 
           return res
             .cookie('jwt', token, {
